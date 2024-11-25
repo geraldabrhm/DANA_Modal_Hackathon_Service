@@ -42,3 +42,4 @@ node_modules/
 dist/
 coverage/
 *.log
+script/
