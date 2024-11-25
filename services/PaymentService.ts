@@ -4,6 +4,9 @@ import { generateUUID } from "../utils/generateHeader";
 
 export const directDebitPaymentService = async (): Promise<ServiceOutput> => {
   try {
+    const StandardDirectPayAcquiringProdCode = "51051000100000000001";
+    const QUASI_CASH_MFI = "6050" // Member Financial Institution (MFI) for Quasi Cash
+
     const payment = await ApiClient.paymentService.post(
       "/v1.0/debit/payment.htm",
       {
@@ -14,25 +17,13 @@ export const directDebitPaymentService = async (): Promise<ServiceOutput> => {
           value: "875000.00",
         },
         additionalInfo: {
-          productCode: "", // TODO
+          productCode: StandardDirectPayAcquiringProdCode,
           order: {
             orderTitle: "DANA Modal Repayment",
           },
-          mcc: "", // TODO
-          envInfo: { // TODO
-            sessionId: "8EU6mLl5mUpUBgyRFT4v7DjfQ3fcauthcenter",
-            tokenId: "a8d359d6-ca3d-4048-9295-bbea5f6715a6",
-            websiteLanguage: "en_US",
-            clientIp: "10.15.8.189",
-            osType: "Windows.PC",
-            appVersion: "1.0",
-            sdkVersion: "1.0",
-            sourcePlatform: "IPG",
-            orderOsType: "IOS",
-            merchantAppVersion: "1.0",
+          mcc: QUASI_CASH_MFI,
+          envInfo: {
             terminalType: "SYSTEM",
-            orderTerminalType: "WEB",
-            extendInfo: '{"deviceId":"CV19A56370e8a00d54293aab8001e4794"}',
           },
         },
       }
@@ -41,7 +32,7 @@ export const directDebitPaymentService = async (): Promise<ServiceOutput> => {
     return {
       success: true,
       message: "Success to process payment",
-      data: {},
+      data: payment.data,
       status: payment.status,
     };
   } catch (err) {

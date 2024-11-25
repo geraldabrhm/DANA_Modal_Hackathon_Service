@@ -37,12 +37,13 @@ class APIClient {
       headers: {
         "Content-Type": "application/json",
         "X-TIMESTAMP": generateTimestampGMT7(),
-        "X-PARTNER_ID": process.env.PARTNER_CLIENT_ID || "",
+        "X-PARTNER-ID": process.env.PARTNER_CLIENT_ID || "",
         "X-EXTERNAL-ID": generateUUID(),
         "X-SIGNATURE": generateSignature(
           process.env.PARTNER_CLIENT_ID || "",
           generateTimestampGMT7()
         ),
+        "CHANNEL-ID": process.env.SERVER_ID || "",
       }
     })
 
@@ -50,11 +51,11 @@ class APIClient {
   }
 
   addRequestInterceptor() {
-    this.authService.interceptors.request.use()
+    this.authService.interceptors.request.use() // TODO
   }
 
   addResponseInterceptor() {
-    this.authService.interceptors.response.use()
+    this.authService.interceptors.response.use() // TODO
   }
 }
 
