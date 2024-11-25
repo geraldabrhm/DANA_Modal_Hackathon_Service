@@ -1,6 +1,9 @@
 import axios, { AxiosInstance } from "axios";
 import { generateTimestampGMT7, generateUUID } from "../utils/generateHeader";
-import { generateSignature } from "../utils/encryption";
+import {
+  generateApplyTokenSignature,
+  generateTransactionSignature,
+} from "../utils/encryption";
 
 class APIClient {
   static INSTANCE: APIClient;
@@ -24,7 +27,7 @@ class APIClient {
         "Content-Type": "application/json",
         "X-TIMESTAMP": generateTimestampGMT7(),
         "X-CLIENT-KEY": process.env.PARTNER_CLIENT_ID || "",
-        "X-SIGNATURE": generateSignature(
+        "X-SIGNATURE": generateApplyTokenSignature(
           process.env.PARTNER_CLIENT_ID || "",
           generateTimestampGMT7()
         ),
@@ -36,26 +39,21 @@ class APIClient {
       timeout: APIClient.DEFAULT_TIMEOUT,
       headers: {
         "Content-Type": "application/json",
-        "X-TIMESTAMP": generateTimestampGMT7(),
         "X-PARTNER-ID": process.env.PARTNER_CLIENT_ID || "",
         "X-EXTERNAL-ID": generateUUID(),
-        "X-SIGNATURE": generateSignature(
-          process.env.PARTNER_CLIENT_ID || "",
-          generateTimestampGMT7()
-        ),
         "CHANNEL-ID": process.env.SERVER_ID || "",
-      }
-    })
+      },
+    });
 
     this.addRequestInterceptor();
   }
 
   addRequestInterceptor() {
-    this.authService.interceptors.request.use() // TODO
+    this.authService.interceptors.request.use(); // TODO
   }
 
   addResponseInterceptor() {
-    this.authService.interceptors.response.use() // TODO
+    this.authService.interceptors.response.use(); // TODO
   }
 }
 

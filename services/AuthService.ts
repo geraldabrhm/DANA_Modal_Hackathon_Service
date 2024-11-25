@@ -2,12 +2,17 @@ import axios from "axios";
 import { ServiceOutput } from "../types/ServiceOutput";
 import ApiClient from "../lib/ApiClient";
 
-export const applyTokenService = async (authCode: string): Promise<ServiceOutput> => {
+export const applyTokenService = async (
+  authCode: string
+): Promise<ServiceOutput> => {
   try {
-    const response = await ApiClient.authService.post("/v1.0/access-token/b2b2c.htm", {
-      grantType: "AUTHORIZATION_CODE",
-      authCode: authCode,
-    })
+    const response = await ApiClient.authService.post(
+      "/v1.0/access-token/b2b2c.htm",
+      {
+        grantType: "AUTHORIZATION_CODE",
+        authCode: authCode,
+      }
+    );
 
     return {
       success: true,
@@ -23,7 +28,9 @@ export const applyTokenService = async (authCode: string): Promise<ServiceOutput
       status: response.status,
     };
   } catch (err) {
-    console.error(`[AuthService] Failed to exchange auth code to access token: ${err}`);
+    console.error(
+      `[AuthService] Failed to exchange auth code to access token: ${err}`
+    );
     return {
       success: false,
       message: "Failed to exchange auth code to access token",
@@ -31,4 +38,4 @@ export const applyTokenService = async (authCode: string): Promise<ServiceOutput
       status: 500,
     };
   }
-}
+};
