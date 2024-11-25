@@ -1,11 +1,10 @@
 import axios from "axios";
 import { ServiceOutput } from "../types/ServiceOutput";
-import API_CLIENT from "../lib/ApiClient";
-import { access } from "fs";
+import ApiClient from "../lib/ApiClient";
 
 export const applyTokenService = async (authCode: string): Promise<ServiceOutput> => {
   try {
-    const response = await API_CLIENT.post("/v1.0/access-token/b2b2c.htm", {
+    const response = await ApiClient.authService.post("/v1.0/access-token/b2b2c.htm", {
       grantType: "AUTHORIZATION_CODE",
       authCode: authCode,
     })
