@@ -1,21 +1,30 @@
 import axios from "axios";
 import { ServiceOutput } from "../types/ServiceOutput";
 import API_CLIENT from "../lib/ApiClient";
+import { access } from "fs";
 
-export const exchangeAuthCodeToAccessToken = async (authCode: string): Promise<ServiceOutput> => {
+export const applyTokenService = async (authCode: string): Promise<ServiceOutput> => {
   try {
     const response = await API_CLIENT.post("/v1.0/access-token/b2b2c.htm", {
-      grant_type: "authorization_code",
-      code: authCode,
-    });
+      grantType: "AUTHORIZATION_CODE",
+      authCode: authCode,
+    })
 
     return {
       success: true,
-      message: "Success",
-      data: response.data,
+      message: "Success exchange auth code to access token",
+      data: {
+        accessToken: response.data.accessToken,
+        accessTokenExpiryTime: response.data.accessTokenExpiryTime,
+        refreshToken: response.data.refreshToken,
+        refreshTokenExpiryTime: response.data.refreshTokenExpiryTime,
+        tokenType: response.data.tokenType,
+        publicUserId: response.data.additionalInfo.userInfo?.publicUserId,
+      },
       status: response.status,
     };
   } catch (err) {
+    console.error(`[AuthService] Failed to exchange auth code to access token: ${err}`);
     return {
       success: false,
       message: "Failed to exchange auth code to access token",

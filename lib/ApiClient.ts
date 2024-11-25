@@ -1,5 +1,6 @@
 import axios from "axios";
 import { generateTimestampGMT7 } from "../utils/generateHeader";
+import { generateSignature } from "../utils/encryption";
 
 const DEFAULT_TIMEOUT = 10000;
 
@@ -9,8 +10,12 @@ const API_CLIENT = axios.create({
   headers: {
     "Content-Type": "application/json",
     "X-TIMESTAMP": generateTimestampGMT7(),
-    "X-CLIENT-KEY": process.env.PARNTER,
+    "X-CLIENT-KEY": process.env.PARTNER_CLIENT_ID || "",
+    "X-SIGNATURE": generateSignature(
+      process.env.PARTNER_CLIENT_ID || "",
+      generateTimestampGMT7()
+    ),
   },
-})
+});
 
 export default API_CLIENT;

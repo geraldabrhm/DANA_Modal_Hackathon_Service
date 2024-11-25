@@ -3,9 +3,11 @@ dotenv.config();
 
 import app from "./express";
 import IndexRoute from "./routes/IndexRoute";
+import AuthRoute from "./routes/AuthRoute";
 const port: number = process.env.PORT ? parseInt(process.env.PORT) : 3001;
 
 app.use("/api", IndexRoute);
+app.use("/api/auth", AuthRoute);
 
 const server = app.listen(port);
 

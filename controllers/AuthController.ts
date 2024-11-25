@@ -1,15 +1,21 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction } from "express";
+import { applyTokenService } from "../services/AuthService";
 
-export const registerUserController = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const { email, name, password } = req.body;
+export const applyTokenController = async (
+  req: Request,
+  res: Response,
+  next?: NextFunction
+) => {
+  try {
+    const { authCode } = req.body;
+    const { success, message, data, status } =
+      await applyTokenService(authCode);
 
-        // const { success, message, data, status } = await registerUser(email, name, password);
-
-        // res.status(status).json({success, message, data});
-        res.status(200).json({success: true, message: 'User registered successfully', data: {email, name}});
-    } catch(err) {
-        // next(err);
-        console.error(err);
-    }
-}
+    res.status(200).json({ success, message, data, status });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ success: false, message: "Failed to apply token", data: null });
+    console.error(err);
+  }
+};
