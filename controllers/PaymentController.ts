@@ -7,7 +7,8 @@ export const directDebitPaymentController = async (
   next?: NextFunction
 ) => {
   try {
-    const response = await directDebitPaymentService();
+    const amount = req.body.paymentAmount;
+    const response = await directDebitPaymentService(amount);
 
     res.status(200).json(response);
   } catch (err) {

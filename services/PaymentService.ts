@@ -3,19 +3,20 @@ import { ServiceOutput } from "../types/ServiceOutput";
 import { generateTransactionSignature } from "../utils/encryption";
 import { generateTimestampGMT7, generateUUID } from "../utils/generateHeader";
 
-export const directDebitPaymentService = async (): Promise<ServiceOutput> => {
+export const directDebitPaymentService = async (amount: number): Promise<ServiceOutput> => {
   try {
     const relativePathUrl = "/v1.0/debit/payment.htm";
 
     const StandardDirectPayAcquiringProdCode = "51051000100000000001";
     const QUASI_CASH_MFI = "6050"; // Member Financial Institution (MFI) for Quasi Cash
+    const amountValue = `${amount}.00`;
 
     const requestBody = {
       partnerReferenceNo: generateUUID(),
       merchantId: process.env.PARTNER_MERCHANT_ID || "",
       amount: {
         currency: "IDR",
-        value: "875000.00",
+        value: amountValue,
       },
       additionalInfo: {
         productCode: StandardDirectPayAcquiringProdCode,
