@@ -5,7 +5,7 @@
   "main": "server.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon server.ts",
+    "dev": "cp .env.development .env && nodemon server.ts",
     "build": "npx tsc",
     "deploy": "sh script/build.sh"
   },

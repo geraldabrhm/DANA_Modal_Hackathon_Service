@@ -36,6 +36,7 @@ npm-debug.log
 .env.test
 .env.production
 .env.development
+.env.staging
 .env.local
 
 node_modules/
